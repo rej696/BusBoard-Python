@@ -34,7 +34,7 @@ class LiveBusStop:
 
     def next_departures(self):
         self.buses.sort(key=lambda b: b.departs())
-        return "\n".join([bus.to_string() for bus in self.buses[0:5]])
+        return [bus.to_string() for bus in self.buses[0:5]]
 
 class Bus:
     def __init__(self, data):
@@ -61,6 +61,9 @@ class PostcodeAPI:
 class Postcode:
     def __init__(self, data):
         self.data = data['result']
+
+    def name(self):
+        return self.data['postcode']
     
     def longitude(self):
         return self.data['longitude']
@@ -83,7 +86,7 @@ def main():
     for stopcode in stopcodes[0:2]:
         stop = transportApi.get_live_bus_stop(stopcode)        
         print('These are the upcoming buses at ' + stop.name() + ':')
-        print(stop.next_departures())
+        print("\n".join(stop.next_departures()))
         print()
 
 if __name__ == "__main__": main()
