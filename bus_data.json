@@ -1,0 +1,102 @@
+{
+  "atcocode": "0180BAC30592",
+  "smscode": "bthjpad",
+  "request_time": "2019-09-16T11:00:50+01:00",
+  "name": "SouthGate (Wh)",
+  "stop_name": "SouthGate",
+  "bearing": "SE",
+  "indicator": "Wh",
+  "locality": "Bath City Centre, Bath",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      -2.35971,
+      51.37842
+    ]
+  },
+  "departures": {
+    "all": [
+      {
+        "mode": "bus",
+        "line": "41",
+        "line_name": "41",
+        "direction": "Odd Down P&R",
+        "operator": "FB",
+        "date": "2019-09-16",
+        "expected_departure_date": "2019-09-16",
+        "aimed_departure_time": "11:03",
+        "expected_departure_time": "11:03",
+        "best_departure_estimate": "11:03",
+        "source": "NextBuses",
+        "dir": "inbound",
+        "operator_name": "First in Bristol Bath & the West",
+        "id": "https:\/\/transportapi.com\/v3\/uk\/bus\/route\/FB\/41\/inbound\/0180BAC30592\/2019-09-16\/11:03\/timetable.json?app_id=e9c79401&app_key=e606f492b9721b5cca2753b92e0cb8f3"
+      },
+      {
+        "mode": "bus",
+        "line": "41",
+        "line_name": "41",
+        "direction": "Odd Down P&R",
+        "operator": "FB",
+        "date": "2019-09-16",
+        "expected_departure_date": "2019-09-16",
+        "aimed_departure_time": "11:15",
+        "expected_departure_time": "11:15",
+        "best_departure_estimate": "11:15",
+        "source": "NextBuses",
+        "dir": "inbound",
+        "operator_name": "First in Bristol Bath & the West",
+        "id": "https:\/\/transportapi.com\/v3\/uk\/bus\/route\/FB\/41\/inbound\/0180BAC30592\/2019-09-16\/11:15\/timetable.json?app_id=e9c79401&app_key=e606f492b9721b5cca2753b92e0cb8f3"
+      },
+      {
+        "mode": "bus",
+        "line": "41",
+        "line_name": "41",
+        "direction": "Odd Down P&R",
+        "operator": "FB",
+        "date": "2019-09-16",
+        "expected_departure_date": null,
+        "aimed_departure_time": "11:28",
+        "expected_departure_time": null,
+        "best_departure_estimate": "11:28",
+        "source": "NextBuses",
+        "dir": "inbound",
+        "operator_name": "First in Bristol Bath & the West",
+        "id": "https:\/\/transportapi.com\/v3\/uk\/bus\/route\/FB\/41\/inbound\/0180BAC30592\/2019-09-16\/11:28\/timetable.json?app_id=e9c79401&app_key=e606f492b9721b5cca2753b92e0cb8f3"
+      },
+      {
+        "mode": "bus",
+        "line": "41",
+        "line_name": "41",
+        "direction": "Odd Down, Odd Down P&R",
+        "operator": "FB",
+        "date": "2019-09-16",
+        "expected_departure_date": null,
+        "aimed_departure_time": "11:41",
+        "expected_departure_time": null,
+        "best_departure_estimate": "11:41",
+        "source": "NextBuses",
+        "dir": "inbound",
+        "operator_name": "First in Bristol Bath & the West",
+        "id": "https:\/\/transportapi.com\/v3\/uk\/bus\/route\/FB\/41\/inbound\/0180BAC30592\/2019-09-16\/11:41\/timetable.json?app_id=e9c79401&app_key=e606f492b9721b5cca2753b92e0cb8f3"
+      },
+      {
+        "mode": "bus",
+        "line": "41",
+        "line_name": "41",
+        "direction": "Odd Down, Odd Down P&R",
+        "operator": "FB",
+        "date": "2019-09-16",
+        "expected_departure_date": null,
+        "aimed_departure_time": "11:54",
+        "expected_departure_time": null,
+        "best_departure_estimate": "11:54",
+        "source": "NextBuses",
+        "dir": "inbound",
+        "operator_name": "First in Bristol Bath & the West",
+        "id": "https:\/\/transportapi.com\/v3\/uk\/bus\/route\/FB\/41\/inbound\/0180BAC30592\/2019-09-16\/11:54\/timetable.json?app_id=e9c79401&app_key=e606f492b9721b5cca2753b92e0cb8f3"
+      }
+    ]
+  },
+  "source": "NextBuses (cached)"
+}
