@@ -10,9 +10,9 @@ class SingleDeparture:
         self.final_destination = final_destination
 
     def __repr__(self):
-        single_departure = "\nLine Name : " + self.line_name + "\nAimed Departure Time : " + self.aimed_departure_time +\
-                           "\nExpected Departure Time : " + self.expected_departure_time +\
-                           "\nFinal Destination : " + self.final_destination
+        single_departure = f"\nLine Name : {self.line_name}\nAimed Departure Time : {self.aimed_departure_time}\n" \
+                           f"Expected Departure Time : {self.expected_departure_time}\n" \
+                           f"Final Destination : {self.final_destination}\n"
         return single_departure
 
     @staticmethod
@@ -39,10 +39,10 @@ class BusDepartures:
         return BusDepartures(bus_stop_name, departures)
 
     def __repr__(self):
-        buses_string = []
+        buses_string = [f"\nBus Stop Name : {self.bus_stop_name}\n"]
         for bus in self.buses:
             buses_string.append(str(bus))
-        return ("\n\nBus Stop Name : " + str(self.bus_stop_name)).join(buses_string)
+        return "".join(buses_string)
 
 
 def main():
