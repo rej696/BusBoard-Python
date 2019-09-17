@@ -1,5 +1,7 @@
 import requests
+import logging
 import json
+logging.basicConfig(filename="BusBoard.log", filemode="w", level=logging.DEBUG)
 
 
 class SingleDeparture:
@@ -31,7 +33,17 @@ class BusDepartures:
     @staticmethod
     def json_decoder(json_file):
         bus_stop_name = json_file["stop_name"]
-        bus_departures_data = json_file["departures"]["all"]
+        try:
+            bus_departures_data = json_file["departures"]["all"]
+        except KeyError:
+            logging.info(
+                f"key error raised, likely that the json for the stop {bus_stop_name} does not contain any departures"
+            )
+            print(f"No buses found at {bus_stop_name}")
+            return None
+        except:
+            logging.info("an unknown error occurred with determining the departures from the json file")
+            return None
         departures = []
         single_departure = SingleDeparture
         for index in range(len(bus_departures_data)):
@@ -45,67 +57,63 @@ class BusDepartures:
         return "".join(buses_string)
 
 
-def postcode_coordinates_api(postcode):
-    postcode_info_json = requests.get("http://api.postcodes.io/postcodes/" + str(postcode)).json()
-    return [postcode_info_json["result"]["longitude"], postcode_info_json["result"]["latitude"]]
+class TransportApi:
+    def __init__(self, postcode):
+        app_config = []
+        with open("app_id.txt", "r") as file:
+            app_config.append(file.read())
+        with open("app_key.txt", "r") as file:
+            app_config.append(file.read())
+        self.app_config = app_config
+        self.postcode = postcode
+        postcode_info_json = requests.get("http://api.postcodes.io/postcodes/" + str(self.postcode)).json()
+        self.coordinates = [postcode_info_json["result"]["longitude"], postcode_info_json["result"]["latitude"]]
 
+    def identify_bus_stop(self, number_of_stops):
+        atcocode_json = requests.get(
+            f"http://transportapi.com/v3/uk/places.json?"
+            f"app_id={self.app_config[0]}"
+            f"&app_key={self.app_config[1]}"
+            f"&lat={self.coordinates[1]}"
+            f"&lon={self.coordinates[0]}"
+            f"&type=bus_stop"
+        ).json()
+        atcocode_lst = []
+        counter = 0
+        for bus_stop in atcocode_json["member"]:
+            if counter < number_of_stops:
+                atcocode_lst.append(bus_stop["atcocode"])
+        counter += 1
+        # atcocode = "0180BAA01336"  # Kelston View (The Hollow)
+        # atcocode = "0180BAC30302"  # Lorne Road
+        return atcocode_lst
 
-def api_config():
-    app_config = []
-    with open("app_id.txt", "r") as file:
-        app_config.append(file.read())
-    with open("app_key.txt", "r") as file:
-        app_config.append(file.read())
-    return app_config
-
-
-def identify_bus_stop(postcode):
-    app_config = api_config()
-    coordinates = postcode_coordinates_api(postcode)
-    atcocode_json = requests.get(
-        f"http://transportapi.com/v3/uk/places.json?"
-        f"app_id={app_config[0]}"
-        f"&app_key={app_config[1]}"
-        f"&lat={coordinates[1]}"
-        f"&lon={coordinates[0]}"
-        f"&type=bus_stop"
-    ).json()
-    # distance_to_bus_stop = 7742
-    # index = 0
-    # counter = 0
-    # for bus_stop in atcocode_json["member"]:
-    #     if bus_stop["distance"] < distance_to_bus_stop:
-    #         distance_to_bus_stop = bus_stop["distance"]
-    #         index = counter
-    #     counter += 1
-    atcocode_lst = [atcocode_json["member"][0]["atcocode"], atcocode_json["member"][1]["atcocode"]]
-    # atcocode = "0180BAA01336"  # Kelston View (The Hollow)
-    # atcocode = "0180BAC30302"  # Lorne Road
-    return atcocode_lst
-
-
-def bus_stop_live_departures(atcocode, number_of_buses):
-    app_config = api_config()
-    bus_stop_data_json = requests.get(
-        f"https://transportapi.com/v3/uk/bus/stop/{atcocode}"  # atcocode
-        f"/live.json?app_id={app_config[0]}"  # app_id
-        f"&app_key={app_config[1]}" # app_key
-        f"&group=no" # group departures by route ("route") or return one group ("no")w
-        f"&limit={number_of_buses}" +  # number of departures
-        f"&nextbuses=no"
-    ).json()
-    return BusDepartures.json_decoder(bus_stop_data_json)
+    def bus_stop_live_departures(self, atcocode, number_of_buses):
+        bus_stop_data_json = requests.get(
+            f"https://transportapi.com/v3/uk/bus/stop/{atcocode}"  # atcocode
+            f"/live.json?app_id={self.app_config[0]}"
+            f"&app_key={self.app_config[1]}"  # app_key
+            f"&group=no"  # group departures by route ("route") or return one group ("no")w
+            f"&limit={number_of_buses}" +  # number of departures
+            f"&nextbuses=no"
+        ).json()
+        return BusDepartures.json_decoder(bus_stop_data_json)
 
 
 def main():
     print("Welcome to BusBoard.")
-    postcode = str(input("Please enter your postcode: \n"))
-    atcocode = identify_bus_stop(postcode)
-    number_of_buses = input("How many buses would you like to see?: \n")
-    bus_departures_1 = bus_stop_live_departures(atcocode[0], number_of_buses)
-    print(bus_departures_1)
-    bus_departures_2 = bus_stop_live_departures(atcocode[1], number_of_buses)
-    print(bus_departures_2)
+    cont = True
+    while cont:
+        postcode = str(input("Please enter your postcode: \n"))
+        transport_api = TransportApi(postcode)
+        number_of_stops = int(input("How many bus stops would you like to see?: \n"))
+        atcocode_lst = transport_api.identify_bus_stop(number_of_stops)
+        number_of_buses = input("How many buses would you like to see?: \n")
+        for atcocode in atcocode_lst:
+            bus_departures = transport_api.bus_stop_live_departures(atcocode, number_of_buses)
+            if bus_departures is not None:
+                cont = False
+                print(bus_departures)
 
 
 if __name__ == "__main__": main()
