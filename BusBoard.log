@@ -4,3 +4,5 @@ DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): transportapi.com:
 DEBUG:urllib3.connectionpool:http://transportapi.com:80 "GET /v3/uk/places.json?app_id=e9c79401&app_key=e606f492b9721b5cca2753b92e0cb8f3&lat=51.378672&lon=-2.377716&type=bus_stop HTTP/1.1" 200 2003
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): transportapi.com:443
 DEBUG:urllib3.connectionpool:https://transportapi.com:443 "GET /v3/uk/bus/stop/0180BAC30251/live.json?app_id=e9c79401&app_key=e606f492b9721b5cca2753b92e0cb8f3&group=no&limit=2&nextbuses=no HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): transportapi.com:443
+DEBUG:urllib3.connectionpool:https://transportapi.com:443 "GET /v3/uk/bus/stop/0180BAC30250/live.json?app_id=e9c79401&app_key=e606f492b9721b5cca2753b92e0cb8f3&group=no&limit=2&nextbuses=no HTTP/1.1" 200 None

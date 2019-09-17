@@ -1,6 +1,5 @@
 import requests
 import logging
-import json
 logging.basicConfig(filename="BusBoard.log", filemode="w", level=logging.DEBUG)
 
 
@@ -26,9 +25,9 @@ class SingleDeparture:
 
 
 class BusDepartures:
-    def __init__(self, bus_stop_name, buses):
+    def __init__(self, bus_stop_name, departures):
         self.bus_stop_name = bus_stop_name
-        self.buses = buses
+        self.departures = departures
 
     @staticmethod
     def json_decoder(json_file):
@@ -51,7 +50,7 @@ class BusDepartures:
 
     def __repr__(self):
         buses_string = [f"\nBus Stop Name : {self.bus_stop_name}\n"]
-        for bus in self.buses:
+        for bus in self.departures:
             buses_string.append(str(bus))
         return "".join(buses_string)
 
@@ -83,8 +82,6 @@ class TransportApi:
             if counter < number_of_stops:
                 atcocode_lst.append(bus_stop["atcocode"])
             counter += 1
-        # atcocode = "0180BAA01336"  # Kelston View (The Hollow)
-        # atcocode = "0180BAC30302"  # Lorne Road
         return atcocode_lst
 
     def bus_stop_live_departures(self, atcocode, number_of_buses):
@@ -104,15 +101,13 @@ class PostcodeTravelInfo:
         self.postcode = postcode
         self.number_of_stops = number_of_stops
         self.number_of_buses = number_of_buses
-        cont = True
-        while cont:
-            transport_api = TransportApi(self.postcode)
-            atcocode_lst = transport_api.identify_bus_stop(self.number_of_stops)
-            bus_departures_lst = []
-            index = 0
-            for atcocode in atcocode_lst:
-                bus_departures_lst.append(transport_api.bus_stop_live_departures(atcocode, self.number_of_buses))
-                if bus_departures_lst[index] is not None:
-                    cont = False
-                index += 1
-            self.bus_stops = bus_departures_lst
+        transport_api = TransportApi(self.postcode)
+        atcocode_lst = transport_api.identify_bus_stop(self.number_of_stops)
+        bus_stops = []
+        for atcocode in atcocode_lst:
+            bus_stops.append(transport_api.bus_stop_live_departures(atcocode, self.number_of_buses))
+        self.bus_stops = bus_stops
+
+    def display(self):
+        for index in range(self.number_of_stops):
+            print(self.bus_stops[index])
