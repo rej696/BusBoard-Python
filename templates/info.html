@@ -4,26 +4,34 @@
 <div class="container body-content">
     <h2>Bus Information</h2>
     <div>
-        <p>You entered postcode <span>{{ postcode }}</span></p>
-    </div>
-    <div>
-        <p>You entered number of stops <span>{{ number_of_stops }}</span></p>
-    </div>
-    <div>
-        <p>You entered number of buses <span>{{ number_of_buses }}</span></p>
+        <p>Showing the next <span>{{number_of_buses}}</span> buses for each of the <span>{{number_of_stops}}</span> bus stops closest to <span>{{ postcode }}</span></p>
+<!--        <p>You entered number of stops <span>{{ number_of_stops }}</span></p>-->
+<!--        <p>You entered number of buses <span>{{ number_of_buses }}</span></p>-->
     </div>
 
     <div>
         {% for bus_stop in postcode_travel_info.bus_stops %}
-        <div>
-            {% for bus in bus_stop.departures %}
             <div>
-            <p>Line name</p>
+                <h6>Bus stop: {{bus_stop.bus_stop_name}}</h6>
+                <table style="width:100%">
+                    <tr>
+                        <th>Line</th>
+                        <th>Departure Time</th>
+                        <th>Destination</th>
+                    </tr>
+                    {% for bus in bus_stop.departures %}
+                    <div>
+                        <tr>
+                            <td>{{bus.line_name}}</td>
+                            <td>{{bus.expected_departure_time}}</td>
+                            <td>{{bus.final_destination}}</td>
+                        </tr>
+                    </div>
+                    {% endfor %}
+                </table>
             </div>
             {% endfor %}
-        </div>
-        {% endfor %}
-        <div>{{line_name}}</div>
+
     </div>
 </div>
 {% endblock %}
